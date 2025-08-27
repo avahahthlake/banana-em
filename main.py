@@ -8,6 +8,7 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
 display_surf = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("banana🍌")
 running = True
+clock = pygame.time.Clock()
 
 # plane surface
 surf = pygame.Surface((50, 50))
@@ -18,9 +19,9 @@ player_surf = pygame.image.load(join('assets', 'images', 'rocket.svg')).convert_
 # rocket as an frect
 player_rect = player_surf.get_frect(center = (WINDOW_WIDTH/2, WINDOW_HEIGHT-50))
 # direction of rocket
-player_dir = 1
+player_dir = pygame.math.Vector2(2, -1)
 # speed of rocket
-player_speed = 0.3
+player_speed = 10
 
 
 # importing image star
@@ -36,11 +37,16 @@ meteor_rect = meteor_surf.get_frect(center = (WINDOW_WIDTH/2, WINDOW_HEIGHT/2))
 # importing image laesr
 laser_surf = pygame.image.load(join('assets', 'images', 'laser.svg')).convert_alpha()
 # laser as an frect
-laser_rect = laser_surf.get_frect(center = (20, WINDOW_HEIGHT-20))
+laser_rect = laser_surf.get_frect(bottomleft = (20, WINDOW_HEIGHT-20))
+
+
 
 
 # Game Loop
 while running:
+    clock.tick(30)
+    print(clock.get_fps())
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -59,14 +65,10 @@ while running:
     # put laser on the left bottom
     display_surf.blit(laser_surf, laser_rect)
 
-    # make the player bounce within left and right boundaries
-    player_rect.left += player_dir * player_speed
-    if player_rect.left > WINDOW_WIDTH-50:
-        player_dir = -1
-    elif WINDOW_WIDTH-player_rect.left > WINDOW_WIDTH:
-        player_dir = 1
+    # movement of player
+    player_rect.center += player_dir * player_speed
 
-    # the space ship
+    # the space ship i e the player
     display_surf.blit(player_surf, player_rect)
     pygame.display.update()
 
