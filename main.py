@@ -19,8 +19,8 @@ player_surf = pygame.image.load(join('assets', 'images', 'rocket.svg')).convert_
 # rocket as an frect
 player_rect = player_surf.get_frect(center = (WINDOW_WIDTH/2, WINDOW_HEIGHT/2))
 # direction of rocket
-player_x = 1
-player_y = 1
+player_x = 0
+player_y = 0
 player_dir = pygame.math.Vector2(player_x, player_y)
 # speed of rocket
 player_speed = 7
@@ -45,11 +45,28 @@ laser_rect = laser_surf.get_frect(bottomleft = (20, WINDOW_HEIGHT-20))
 # Game Loop
 while running:
     clock.tick(30)
-    print(clock.get_fps())
+    #print(clock.get_fps())
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        # if event.type == pygame.MOUSEMOTION:
+        #     player_rect.center = event.pos
+
+    # input
+    print(pygame.mouse.get_pos())
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_RIGHT]:
+        player_dir.x = 1
+    elif keys[pygame.K_LEFT]:
+        player_dir.x = -1
+    else:
+        player_dir.x = 0
+        
+
+    
+
+    player_rect.center += player_dir * player_speed
 
     # the background
     display_surf.fill("cornsilk")
@@ -65,15 +82,6 @@ while running:
     # put laser on the left bottom
     display_surf.blit(laser_surf, laser_rect)
 
-    # movement of player
-    player_rect.center += player_dir * player_speed
-    
-    # if the player collides with the top or bottom
-    if player_rect.bottom > WINDOW_HEIGHT or player_rect.top < 0:
-        player_dir.y *= -1
-    # if the player collides with the left or right
-    if player_rect.right > WINDOW_WIDTH or player_rect.left < 0:
-        player_dir.x *= -1
    
     # the space ship i e the player
     display_surf.blit(player_surf, player_rect)
