@@ -17,11 +17,13 @@ surf.fill("red")
 # importing image rocket
 player_surf = pygame.image.load(join('assets', 'images', 'rocket.svg')).convert_alpha()
 # rocket as an frect
-player_rect = player_surf.get_frect(center = (WINDOW_WIDTH/2, WINDOW_HEIGHT-50))
+player_rect = player_surf.get_frect(center = (WINDOW_WIDTH/2, WINDOW_HEIGHT/2))
 # direction of rocket
-player_dir = pygame.math.Vector2(2, -1)
+player_x = 1
+player_y = 1
+player_dir = pygame.math.Vector2(player_x, player_y)
 # speed of rocket
-player_speed = 10
+player_speed = 7
 
 
 # importing image star
@@ -38,8 +40,6 @@ meteor_rect = meteor_surf.get_frect(center = (WINDOW_WIDTH/2, WINDOW_HEIGHT/2))
 laser_surf = pygame.image.load(join('assets', 'images', 'laser.svg')).convert_alpha()
 # laser as an frect
 laser_rect = laser_surf.get_frect(bottomleft = (20, WINDOW_HEIGHT-20))
-
-
 
 
 # Game Loop
@@ -67,7 +67,14 @@ while running:
 
     # movement of player
     player_rect.center += player_dir * player_speed
-
+    
+    # if the player collides with the top or bottom
+    if player_rect.bottom > WINDOW_HEIGHT or player_rect.top < 0:
+        player_dir.y *= -1
+    # if the player collides with the left or right
+    if player_rect.right > WINDOW_WIDTH or player_rect.left < 0:
+        player_dir.x *= -1
+   
     # the space ship i e the player
     display_surf.blit(player_surf, player_rect)
     pygame.display.update()
