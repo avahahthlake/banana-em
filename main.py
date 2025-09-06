@@ -23,7 +23,7 @@ player_x = 0
 player_y = 0
 player_dir = pygame.math.Vector2(player_x, player_y)
 # speed of rocket
-player_speed = 7
+player_speed = 1000
 
 
 # importing image star
@@ -44,7 +44,7 @@ laser_rect = laser_surf.get_frect(bottomleft = (20, WINDOW_HEIGHT-20))
 
 # Game Loop
 while running:
-    clock.tick(30)
+    dt = clock.tick() / 1000
     #print(clock.get_fps())
 
     for event in pygame.event.get():
@@ -54,19 +54,11 @@ while running:
         #     player_rect.center = event.pos
 
     # input
-    print(pygame.mouse.get_pos())
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_RIGHT]:
-        player_dir.x = 1
-    elif keys[pygame.K_LEFT]:
-        player_dir.x = -1
-    else:
-        player_dir.x = 0
-        
-
+    
     
 
-    player_rect.center += player_dir * player_speed
+    player_rect.center += player_dir * player_speed * dt
 
     # the background
     display_surf.fill("cornsilk")
