@@ -55,7 +55,8 @@ while running:
 
     # input
     keys = pygame.key.get_pressed()
-    
+    player_dir.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
+    player_dir.y = int(keys[pygame.K_DOWN]) - int(keys[pygame.K_UP]) 
     
 
     player_rect.center += player_dir * player_speed * dt
